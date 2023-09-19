@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Ajouter Client{% endblock %}
+
+{% block content %}
+<div class = "row col-md-8 my-5">
+    <div class="card col-md-8 mx-auto px-0">
+        <div class="card-header text-center" style="color:#64CCC5; background-color:#176B87; font-weight:bold;">
+            VOIR LES DETAILS DU CLIENT
+        </div>
+        <div class="card-body" style="background-color:#64CCC5;color:#fff;" >
+            {% if data %}
+            <div class="row mb-4" style="color:#fff;font-weight:bold;">
+                <table class="table table-bordered" style="color:#fff" >
+                    <tbody>
+                        <tr style="color:#fff; font-weight:bold;">
+                            <td>
+                                ID Client
+                            </td>
+                            <td>
+                                {{ data.id_client }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ID SSN Client
+                            </td>
+                            <td>
+                                {{ data.client_ssn_id }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                nom
+                            </td>
+                            <td>
+                                {{ data.nom }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Age
+                            </td>
+                            <td>
+                                {{ data.age }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                email
+                            </td>
+                            <td>
+                                {{ data.email }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Pays
+                            </td>
+                            <td>
+                                {{ data.pays }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Ville
+                            </td>
+                            <td>
+                                {{ data.ville }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Statut
+                            </td>
+                            {% if data.statut == 'activer' %}
+                            <td> <span class="badge bg-success text-center">{{ data.statut }}</span></td>
+                            {% else %}
+                            <td> <span class="badge bg-danger text-center">{{ data.statut }}</span></td>
+                            {% endif %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row mb-4">
+                <div class="form-group col-md-12">
+                    <div class="float-left">
+                        <a href="{{ url_for('modifierclient',id_client=data.id_client ) }}">
+                            <button class="btn"style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Modifier</button>
+                        </a>
+                    </div>
+                    {% if data.statut == 'desactiver' %}
+                    <div class="float-right">
+                        <a href="{{ url_for('activerclient',id_client=data.id_client ) }}">
+                            <button class="btn" onclick="alert('Êtes-vous sûr de vouloir activer ce client ?')" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Activer</button>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div class="float-right">
+                        <a href="{{ url_for('supprimerclient',id_client=data.id_client ) }}">
+                            <button class="btn" onclick="alert('Êtes-vous sûr de vouloir désactiver ce client ?')"style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Supprimer</button>
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+                {%else%}
+                <form action="{{ url_for('voirclient') }}" id="voir_client" method="POST">
+                    <div class="col-auto">
+                        <label class="m-auto pr-3" for="id_client" style="color:#fff ; font-weight:bold; font-size:16px;">ID CLIENT</label>
+                        <input class="form-control" name="id_client" id="id_client" type="textfield" placeholder="ID client" minlength="9" maxlength="9">
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group input-group mb-3">
+                        <label class="m-auto pr-3" style="color:#fff ;font-weight:bold; font-size:16px;">OU</label>
+                    </div>
+                    <div class="col-auto">
+                        <label class="m-auto pr-3" for="client_ssn_id" style="color:#fff; font-weight:bold; font-size:16px;">CLIENT SSN ID</label>
+                    <input class="form-control" name="client_ssn_id" id="client_ssn_id" type="textfield" placeholder="client ssn id" minlength="9" maxlength="9">
+                    </div>
+                    <br>
+                    <div class="form-group col-12 text-center" >
+                        <input type="submit" value="Voir" class="btn mx-auto" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">
+                    </div>
+                </form>
+                {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MOKO-BANK - {% block title %}{% endblock title %}</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename = 'images/logo.png') }}" type="image/x-icon"/>
+    <script type="text/javascript" src="{{ url_for('static', filename = 'js/index.js') }}" ></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap-responsive.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style.css') }}" /> 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/pluton.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/style-responsive.css') }}" />
+    <link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.js"></script>
+        
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/jquery.cslider.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/jquery.bxslider.css') }}" />
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    {% block style %}{% endblock style %}
+</head>
+<body>
+
+
+    {% include "includes/header.html" %}
+
+<div class="container my-5">
+    <!-- Ce code est utilisé pour afficher un message contextuel en cas de succès, de panne ou de défaillance. -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{category}}">
+                    <p style="font-weight: normal;">{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="d-flex justify-content-center h-300">
+
+        {% block content %}
+
+        {% endblock %}
+    
+    </div>
+
+</div>
+</body>
+</html>    

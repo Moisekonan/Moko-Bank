@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Déclaration{% endblock %}
+
+{% block content %}
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-1.12.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+
+        {% if data %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="input col-md-1 col-xs-2">
+            <!--		Afficher le nombre de lignes 		-->
+            <select class="form-control" name="pays" id="maxLine" style="margin-bottom: 10px;height: auto;width: auto;">
+                <option value="5">5</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="row col-md-12 col-xs-12">
+        <div class="table-responsive">
+            <h3 style="text-align: center;">Relevé de compte</h3>
+            <table class="table table-striped table-hover table-condensed table-bordered" id="Table">
+                <thead>
+                <tr class="info">
+
+                  <th style="color:#176B87;background-color:#64CCC5; font-size:18px;font-weight:bold;" > Id Transaction </th>
+                  <th style="color:#176B87;background-color:#64CCC5; font-size:18px;font-weight:bold;"> Id Compte </th>
+                  <th style="color:#176B87;background-color:#64CCC5; font-size:18px;font-weight:bold;"> Description</th>
+                  <th style="color:#176B87;background-color:#64CCC5; font-size:18px;font-weight:bold;"> Montant</th>
+                  <th style="color:#176B87;background-color:#64CCC5; font-size:18px;font-weight:bold;"> Date</th>
+                      
+                </tr>
+                </thead>
+                <tbody id="TableFamilias">
+                    {% for i in data %}
+                    <tr>
+                      <td>  {{ i.trans_id }}</td>
+                      <td>  {{ i.id_compte }}</td>
+                      <td> {{ i.trans_message }}</td>
+                      <td>   {{ i.montant }}</td>
+                      <td>   {{ i.heure_sortir }}</td>
+                    </tr>              
+                    {%endfor%}
+    
+                </tbody>
+             
+                <tfoot></tfoot>
+            </table>
+    
+            <div>
+                <nav>
+                    <ul class="pagination"></ul>
+                </nav>
+            </div>
+          <div class="center">
+            <a href="{{ url_for('declaration_pdf',id_compte=id_compte,ftype='pdf' ) }}">
+              <button class="btn"  style="background-color:#64CCC5; color:#fff;font-size:18px;font-weight:bold;">Télécharger en PDF</button>
+            </a>
+            <a href="{{ url_for('declaration_pdf',id_compte=id_compte, ftype='xl' ) }}">
+              <button class="btn"  style="background-color:#176B87; color:#fff;font-size:18px;font-weight:bold;">Télécharger en XL</button>
+            </a>
+          </div>
+        </div>
+    </div>
+</div>
+{%else%}
+<form action="declaration" id="view_acc" method="POST" class="">
+    <div class="form-group input-group mb-3">
+        <label class="m-auto pr-3" for="id_compte">ID DU COMPTE</label>
+        <input class="form-control" name="id_compte" id="id_compte" type="textfield" placeholder="ID compte" minlength="9" maxlength="9">
+    </div>
+    <div class="form-group input-group mb-3">
+        <label><input type="radio" name="Radio" value="red"> DERNIERE TRANSACTION</label></br>
+        <label><input type="radio" name="Radio" value="green"> DATE DE DEBUT, DATE DE FIN</label>
+
+    </div>
+    <div class="red box" style="display: none;">
+        <label class="m-auto pr-3" for="number"> DERNIER N° TRANSACTION</label>
+        <input class="form-control" name="number" id="number" type="number" placeholder="Nombres de Transactions" maxlength="3">
+      
+    </div>
+    <div class="green box" style="display: none;">
+        <label for="start_date">Date de début:</label>
+        <input type="date" id="start_date" name="start_date">
+          <label for="end_date">Date de fin:</label>
+        <input type="date" id="end_date" name="end_date">
+  
+    </div>
+
+  
+  
+    <div class="form-group">
+        <input type="submit" value="Voir" class="btn mx-auto" style="color:#64CCC5;border-color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">
+    </div>
+</form>
+{% endif %}
+        <script>
+            $(document).ready(function () {
+  getPagination('#Table');
+  $('#maxLine option:last').prop('selected', true).trigger('change');
+});
+
+function getPagination(table) {
+
+  $('#maxLine').on('change', function(e) {
+    $('.pagination').html(''); // réinitialiser la pagination
+    var trnum = 0; // réinitialiser le compteur de tr
+    var maxLine = parseInt($(this).val()); // Obtenir le nombre maximum de lignes à partir de l'option sélectionnée
+    var totalLigne = $(table + ' tbody tr').length; // nombre de lignes
+    $(table + ' tr:gt(0)').each(function() { // chaque TR dans le tableau et non dans l'en-tête
+      trnum++; // Compteur de départ
+      if (trnum > maxLine) { // si le nombre de tr est supérieur à maxLine
+
+        $(this).hide(); // l'effacer
+      }
+      if (trnum <= maxLine) {
+        $(this).show();
+      } // else fade in Important in case if it ..
+    }); //  was fade out to fade it in
+    if (totalLigne > maxLine) { // si le nombre total de lignes est supérieur à l'option max rows
+      var pagenum = Math.ceil(totalLigne / maxLine); // ceil total(rows/maxLine) to get ..
+      //	nombres de pages
+      for (var i = 1; i <= pagenum;) { // pour chaque page, ajouter le lien pagination li
+        $('.pagination').append('<li class"wp" data-page="' + i + '">\
+        <span>' + i++ + '<span class="sr-only">(current)</span></span>\
+        </li>').show();
+      } // end for i
+    } // fin si le nombre de lignes > nombre maximum de lignes
+    $('.pagination li:first-child').addClass('activer'); // ajouter une classe d'actifs à la première ligne
+    $('.pagination li').on('click', function() { // on click each page
+      var pageNum = $(this).attr('data-page'); // get it's number
+      var trIndex = 0; // reset tr counter
+      $('.pagination li').removeClass('activer'); // remove activer class from all li
+      $(this).addClass('activer'); // add activer class to the clicked
+      $(table + ' tr:gt(0)').each(function() { // each tr in table not the header
+        trIndex++; // tr index counter
+        // if tr index gt maxLine*pageNum or lt maxLine*pageNum-maxLine fade if out
+        if (trIndex > (maxLine * pageNum) || trIndex <= ((maxLine * pageNum) - maxLine)) {
+          $(this).hide();
+        } else {
+          $(this).show();
+        } //else fade in
+      }); // end of for each tr in table
+    }); // end of on click pagination list
+
+
+  });
+
+  // end of on select change
+
+
+
+  // END OF PAGINATION
+}
+  // Radio button
+  $(function() {
+      $('input[name="Transactions"]').on('click', function() {
+          if ($(this).val() == 'Transactions') {
+              $('#textboxes').show();
+          }
+          else if ($(this).val() == 'Dates') {
+              $('#dates').show();
+          }
+          else {
+              $('#textboxes').hide();
+          }
+      });
+  });
+
+  $(document).ready(function(){
+      $('input[type="radio"]').click(function(){
+          var inputValue = $(this).attr("value");
+          var targetBox = $("." + inputValue);
+          $(".box").not(targetBox).hide();
+          $(targetBox).show();
+      });
+  });
+    </script>
+  </body>
+</html>
+ 
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Transfert du Montant{% endblock %}
+
+{% block content %}
+<div class = "row col-md-8 my-5">
+    <div class="card col-md-8 mx-auto px-0">
+        <div class="card-header text-center"  style="color:#64CCC5;background-color:#176B87; font-size:18px;font-weight:bold;">
+            Transfert du Montant
+        </div>
+        <div class="card-body" style="background-color:#64CCC5">
+            {% if id_client %}
+            <form action="{{ url_for('transfert',id_client=id_client) }}" method="POST">
+                <table class="col-md-12" style="color:#fff;">
+                    <tbody>
+                        <tr>
+                            <th>
+                                <div class="form-group input-group">
+                                    <label class="pl-3">ID Client</label>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group input-group">
+                                    <label class="pl-3">{{ id_client }}</label>
+                                </div>
+                                
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="form-group input-group">
+                                    <label class="pl-3">Type de compte source</label>
+                                </div>
+                                
+                            </th>
+                            <th>
+                                <div class="form-group input-group pl-3">
+                                    <select class="form-control sel_type" id="src_type" name="src_type">
+                                        <option value="" disabled>--Sélectionner le type--</option>
+                                        <option value="Actuel">Actuel</option>
+                                        <option value="Épargne">Épargne</option>
+                                    </select>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="form-group input-group">
+                                    <label class="pl-3">Type de compte visé</label>
+                                </div>
+                                
+                            </th>
+                            <th>
+                                <div class="form-group input-group pl-3">
+                                    <select class="form-control sel_type" id="trg_type" name="trg_type">
+                                        <option value="" disabled>--Sélectionner le type--</option>
+                                        <option value="actuel" >Actuel</option>
+                                        <option value="Épargne">Épargne</option>
+                                    </select>
+                                </div>
+                                
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="form-group input-group">
+                                    <label class="pl-3">Montant du transfert</label>
+                                </div>
+                            </th>
+                            <th>
+                                <div class="form-group input-group pl-3">
+                                    <input class="form-control" name="id_client" id="id_client" value="{{ id_client }}" type="hidden" disabled>
+                                    <input class="form-control" name="montant" id="montant" type="textfield" placeholder="Transfert du Montant">
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">
+                                <div class="form-group input-group mt-3">
+                                    <input type="submit" value="Envoyer"style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;"onclick="alert('Êtes-vous sûr de vouloir transférer ?')" class="btn mx-auto">
+                                </div>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

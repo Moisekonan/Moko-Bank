@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Statut Client{% endblock %}
+
+{% block content %}
+<div class = "row my-5">
+    <div class="card col-md-12 mx-auto px-0">
+        <div class="card-header text-center"style="color:#64CCC5;background-color:#176B87;font-weight:bold;" >
+            Statut du Client
+        </div>
+        <div class="card-body" style="background-color:#64CCC5;font-weight:bold;">
+            <div class="row mb-4 table table-bordered" style="color:#fff; text-align:center;margin: 0 auto;" >
+                <table id="table responsive-data-table" class="col-md-12">
+                    <thead>
+                        <tr>
+                            <td>ID du client</td>
+                            <td>ID SSN du client</td>
+                            <td>Nom du client</td>
+                            <td>Statut du client</td>
+                            <td>Message</td>
+                            <td>Dernière mise à jour</td>
+                            <td>Voir le profil</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <td>
+                                {{ i.id }}
+                            </td>
+                            <td>
+                                {{ i.ssn_id }}
+                            </td>
+                            <td>
+                                {{ i.nom }}
+                            </td>
+                            {% if i.statut == 'activer' %}
+                            <td> <span class="badge bg-success text-center">{{ i.statut }}</span></td>
+                            {% else %}
+                            <td> <span class="badge bg-danger text-center">{{ i.statut }}</span></td>
+                            {% endif %}
+                            <td>
+                                {{ i.message }}
+                            </td>
+                            <td>
+                                {{ i.date }}
+                            </td>
+                            <td>
+                                <a href="{{ url_for('voirclient',id_client= i.id) }}">
+                                    Voir les détails
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table> 
+            </div>
+            <div class="row mb-4">
+                <div class="form-group col-md-12">
+                    <div class="float-right">
+                        <a href="{{ url_for('statutclient') }}">
+                            <button class="btn" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Actualiser tout</button>
+                        </a>
+                    </div>
+                </div>
+            </div>   
+        </div>
+    </div>
+</div>
+{% endblock %}

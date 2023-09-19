@@ -1,0 +1,132 @@
+
+{% extends "base.html" %}
+
+{% block title %}Connexion{% endblock title %}
+
+{% block content %}
+
+{% block style %}
+<style>
+body{
+    background-image:url("{{url_for('static',filename='images/bimage7.jpg')}}");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    height: 100vh;
+}
+.container{
+    align-content: center;
+}
+    
+.card{
+    height: 73%;
+    margin-top: 5%;
+    margin-bottom: auto;
+    width: 400px ;
+    background-color: rgba(0,0,0,0.5) !important;
+}
+    
+    
+.card-header h3{
+color: white;
+}
+    
+    
+.input-group-prepend span{
+    width: 50px;
+    background-color: #176B87;
+    color: black;
+    border:0 !important;
+}
+    
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.login_btn{
+color: black;
+background-color: #176B87;
+width: 100px;
+}
+
+.login_btn:hover{
+color: black;
+background-color: #64CCC5;
+}
+
+.links{
+color: white;
+}
+
+.links a{
+margin-left: 4px;
+}
+</style>
+{% endblock style %}
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+
+<div class="container">
+    
+    <div class="d-flex justify-content-center">
+    
+        <div class="card" style="background-color: #176B87 !important;">
+            <div class="text-center" style="background-color:#EEEEEE; height:20vh">
+                <a href="{{ url_for('dashboard') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" class="rounded" alt="logo" style="width: 11vw;"></a>
+            </div>     
+            <div class="card-header">
+                <h3 class="text-center">Se connecter</h3>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('login') }}" method="post">
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        <input class="form-control" name="username" type="text" placeholder="Nom d'utilisateur" required maxlength="30" style="height: 37px;">
+                    </div>
+                    <div class="input-group form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        <input class="form-control" name="password" type="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{10,}$" placeholder="Mot de passe" required maxlength="30" id="pwdInput" style="height: 37px;">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="submit" value="Connexion" class="btn float-right login_btn" style="color:#176B87;background-color:#EEEEEE; font-size:15px;">
+                    </div>
+                    <br>
+
+                </form>
+            
+                {% with messages = get_flashed_messages(category_filter=["greet"]) %}
+                    {% if messages %}
+                        <div class="alert">
+                            {% for message in messages %}
+                                <p style="color: red;">{{message}}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Page Accueil{% endblock %}
+{% block content %}
+
+<main role="main">
+  <div class="jumbotron sec-bg">
+    <div class="container">
+      <style>
+        body
+        {
+          background-image:url("{{url_for('static',filename='images/bimage6.jpg')}}");
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          height: 100vh;
+        }
+      </style>
+    </div>
+      <div class="col-sm-8 mx-auto">
+          <h1>Bienvenue</h1>
+          <p style="color: black;"><b>#Moko-Bank permet aux particuliers de gérer leurs comptes d'épargne et leurs comptes courants. Elle permet de créer un client, d'ouvrir un compte client, de mettre à jour et de supprimer un client, de gérer les opérations de caisse telles que les fonctionnalités de dépôt, de retrait et de transfert.</b></p>
+      </div>
+  </div>
+</main>
+
+
+
+{% endblock %}

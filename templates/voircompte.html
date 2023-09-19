@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Voir les détails du compte{% endblock %}
+
+{% block content %}
+<div class = "row col-md-8 my-5">
+    <div class="card col-md-8 mx-auto px-0">
+        <div class="card-header text-center" style="color:#64CCC5;background-color:#176B87; font-size:18px;font-weight:bold;">
+            VOIR LES DETAILS DU COMPTE
+        </div>
+        <div class="card-body" style="background-color:#64CCC5">
+            {% if data %}
+                    <div class="row mb-4" style="color:#fff;font-weight:bold;">
+                        <table class="table table-bordered" style="color:#fff">
+                            <tbody>
+                                <tr style="color:#fff; font-weight:bold;">
+                                    <td>
+                                        ID du Client
+                                    </td>
+                                    <td>
+                                        {{ data.id_client }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        ID du Compte
+                                    </td>
+                                    <td>
+                                        {{ data.id_compte }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Type du Compte
+                                    </td>
+                                    <td>
+                                        {{ data.type_de_compte }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    Solde
+                                    </td>
+                                    <td>
+                                        {{ data.balance }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    Statut
+                                    </td>
+                                    {% if data.statut == 'activer' %}
+                                    <td> <span class="badge bg-success text-center">{{ data.statut }}</span></td>
+                                    {% else %}
+                                    <td> <span class="badge bg-danger text-center">{{ data.statut }}</span></td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row mb-4 col-md-12">
+                        <div class="form-group d-flex col-md-12">
+                            {% if session['user_type']=="gestionnaire" %}
+                                {% if data.statut == 'activer' %}
+                                <a href="{{ url_for('supprimercompte') }}">
+                                    <button class="btn float-right" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Supprimer</button>
+                                </a>
+                                {% else %}
+                                    <a href="{{ url_for('activercompte',id_compte=data.id_compte ) }}">
+                                        <button class="btn float-right" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Activer</button>
+                                    </a>
+                                {% endif %}
+                            {% elif session['user_type']=="caissier" %}
+                                {% if data.statut == 'activer' %}
+                                    <div class="col-md-4">
+                                        <a href="{{ url_for('depot',id_compte=data.id_compte ) }}">
+                                            <button class="btn" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Dépôt</button>
+                                        </a>
+                                    </div>
+                                    {% if data.balance >= 2000 %}
+                                        <div class="col-md-4" style="margin-right:20px">
+                                            <a href="{{ url_for('transfert',id_client=data.id_client) }}">
+                                                <button class="btn" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Transfert</button>
+                                            </a>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <a href="{{ url_for('retrait',id_compte=data.id_compte ) }}">
+                                                <button class="btn" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Retrait</button>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+
+
+                                {% endif %}
+                            {%endif%}
+                        </div>
+                    </div>
+            {%else%}
+                <form class="row gy-2 gx-3 align-items-center" action="voircompte" method="POST" style="height: 40vh; display: contents;"  >
+                    <div class="col-auto">
+                        <label class="m-auto pr-3" for="id_compte" style="color:#fff ; font-weight:bold; font-size:16px;">ID COMPTE</label>
+                        <input class="form-control" name="id_compte" id="id_compte" type="textfield" placeholder="ID Compte" minlength="9" maxlength="9">
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-group input-group mb-3">
+                        <label class="m-auto pr-3" style="color:#fff ;font-weight:bold; font-size:16px;">OU</label>
+                    </div>
+                    <div class="col-auto" >
+                        <label class="m-auto pr-3" for="id_client" style="color:#fff; font-weight:bold; font-size:16px;">ID CLIENT</label>
+                    <input class="form-control" name="id_client" id="id_client" type="textfield" placeholder="ID Client" minlength="9" maxlength="9">
+                    </div>
+                    <br>
+                    <div class="form-group col-12 text-center" >
+                        <input type="submit" value="Voir" class="btn mx-auto" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

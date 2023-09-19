@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}État du compte{% endblock %}
+
+{% block content %}
+<div class = "row mb-3">
+    <div class="card">
+        <div class="card-header text-center" style="color:#64CCC5;background-color:#176B87; font-size:18px;font-weight:bold;" >
+            <h4>État du compte</h4>
+        </div>
+        <div class="card-body" style="background-color:#64CCC5">
+            {% if data %}
+            <table class="table table-bordered" style="color:#fff">
+                <thead>
+                  <tr>
+                    <th> ID du Client</th>
+                    <th> ID du Compte</th>
+                    <th> Type du Compte</th>
+                    <th> État du Compte</th>
+                    <th> Message</th>
+                    <th> Dernière Mise à jour</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for i in data %}
+                  <tr>
+                    <td> {{ i.id_client }}</td>
+                    <td>  {{ i.id_compte }}</td>
+                    <td> {{ i.type_de_compte }}</td>
+                    {% if i.statut == 'activer' %}
+                      <td> <span class="badge bg-success text-center">{{ i.statut }}</span></td>
+                    {% else %}
+                    <td> <span class="badge bg-danger text-center">{{ i.statut }}</span></td>
+                    {% endif %}
+                    <td>   {{ i.message }}</td>
+                    <td>   {{ i.dernier_majour }}</td>
+                  </tr>
+                
+                    
+                  {%endfor%}
+                  
+                </tbody>
+              </table>
+            
+            </div>
+            <div class="row"  style="background-color:#64CCC5; width:90vw; margin:0 auto;">
+              <div class="form-group col-md-12 text-center">
+                  <div class="float-right">
+                      <a href="{{ url_for('voircomptestatut') }}">
+                        <button class="btn" style="color:#64CCC5;background-color:#176B87;font-weight:bold; font-size:18px;">Actualiser la liste</button>
+                      </a>
+                  </div>
+              </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
